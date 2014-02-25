@@ -9,6 +9,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import "JGNetworkRegion.h" 
 
-@interface JGLocationManager : CLLocationManager
+@interface JGLocationManager : CLLocationManager <CLLocationManagerDelegate>
 
 @end
