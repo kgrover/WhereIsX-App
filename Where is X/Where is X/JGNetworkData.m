@@ -1,13 +1,13 @@
 //
-//  JGNetworkLocationManager.h
+//  JGNetworkData.m
 //  Where is X
 //
 //  Created by Jaden Geller on 2/25/14.
 //  Copyright (c) 2014 Jaden Geller. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "JGNetworkData.h"
 
-@interface JGNetworkLocationManager : NSObject
+@implementation JGNetworkData
 
 @end
