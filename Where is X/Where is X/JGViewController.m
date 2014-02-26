@@ -68,6 +68,16 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     
 }
 
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    // test
+    [self.manager requestStateForRegion:self.caltechRegion];
+    [self.manager requestStateForRegion:self.bedroomRegion];
+    [self.manager requestStateForRegion:self.lloydRegion];
+    [self.manager requestStateForRegion:self.ruddockRegion];
+    [self.manager requestStateForRegion:self.pageRegion];
+
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -103,14 +113,14 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 
 -(JGNetworkRegion*)lloydRegion{
     if (!_lloydRegion) {
-        _lloydRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"0:b:86:30:9d:52", @"0:1a:1e:6d:54:82"] inCircularRegion:self.caltechRegion identifier:JGLloydRegionIdentifier];
+        _lloydRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"0:1a:1e:6d:54:82",@"0:b:86:33:17:92",@"0:b:86:32:f7:32",@"0:b:86:33:16:22",@"0:1a:1e:6d:43:82",@"0:b:86:30:9d:52",@"0:b:86:33:12:52",@"0:1a:1e:6d:52:a2",@"0:b:86:30:9f:d2",@"0:b:86:33:18:c2",@"0:b:86:32:f8:72"] inCircularRegion:self.caltechRegion identifier:JGLloydRegionIdentifier];
     }
     return _lloydRegion;
 }
 
 -(JGNetworkRegion*)ruddockRegion{
     if (!_ruddockRegion) {
-        _ruddockRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[] inCircularRegion:self.caltechRegion identifier:JGRuddockRegionIdentifier];
+        _ruddockRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"20:aa:4b:d5:3f:9e",@"0:b:86:32:f8:72",@"0:1a:1e:6d:45:12",@"0:b:86:32:f8:e2",@"0:b:86:32:f6:82",@"0:b:86:32:f7:12",@"0:b:86:33:16:22",@"0:b:86:32:f8:2"] inCircularRegion:self.caltechRegion identifier:JGRuddockRegionIdentifier];
     }
     return _ruddockRegion;
 }
