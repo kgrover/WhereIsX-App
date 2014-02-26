@@ -9,6 +9,10 @@
 #import <CoreLocation/CoreLocation.h>
 #import "JGNetworkRegion.h" 
 
+extern NSTimeInterval const JGLocationManagerSearchIntervalMinimum;
+
 @interface JGLocationManager : CLLocationManager <CLLocationManagerDelegate>
+
+@property (nonatomic) NSTimeInterval searchInterval;
 
 @end

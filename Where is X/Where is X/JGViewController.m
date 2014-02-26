@@ -53,12 +53,9 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    NSLog(@"%i",[JGLocationManager isMonitoringAvailableForClass:[CLCircularRegion class]]);
-    
-    
     [self.manager startMonitoringForRegion:self.bedroomRegion];
     [self.manager startMonitoringForRegion:self.caltechRegion];
-    [self.manager startMonitoringForRegion:self.networkRegion];
+    //[self.manager startMonitoringForRegion:self.networkRegion];
     
     [self.manager startMonitoringSignificantLocationChanges];
     
@@ -157,7 +154,7 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     else if([region.identifier isEqualToString:JGBedroomRegionIdentifier]){
         self.onCampus = NO;
     }
-    //else if([region.identifier isEqualToString:<#(NSString *)#>])
+    //else if([region.identifier isEqualToString:])
 }
 
 -(void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{

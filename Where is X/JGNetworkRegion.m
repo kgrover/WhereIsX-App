@@ -25,6 +25,7 @@
         _network = network;
         _circularRegion = region;
         _identifier = identifier;
+        
     }
     return self;
 }
