@@ -12,35 +12,34 @@
 NSString * const JGBedroomBeaconUUID = @"23542266-18D1-4FE4-B4A1-23F8195B9D39";
 
 NSString * const JGBedroomRegionIdentifier = @"com.JadenGeller.whereis.region.bedroom";
+
 NSString * const JGLloydRegionIdentifier = @"com.JadenGeller.whereis.region.network.lloyd";
+NSString * const JGRuddockRegionIdentifier = @"com.JadenGeller.whereis.region.network.ruddock";
+NSString * const JGPageRegionIdentifier = @"com.JadenGeller.whereis.region.network.page";
+
 NSString * const JGCaltechRegionIdentifier = @"com.JadenGeller.whereis.region.caltech";
 
 CLLocationDegrees const JGCaltechLatitude = 34.13724130951865;
 CLLocationDegrees const JGCaltechLongitude = -118.12534332275385;
 CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 
-//typedef NS_ENUM(NSInteger, JGNetworkLocation){
-//    JGCampusLocationNone,
-//    JGHouseHome,
-//    JGHouseLloyd,
-//    JGHouseRuddock,
-//    JGHousePage,
-//    JGHouseBlacker,
-//    JGHouseRickets,
-//    JGHouseDabney,
-//    JGHouseFlemming,
-//    JGHouseAvery
-//};
-
 @interface JGViewController ()
 
 @property (nonatomic) JGLocationManager *manager;
 @property (nonatomic) CLBeaconRegion *bedroomRegion;
+
 @property (nonatomic) JGNetworkRegion *lloydRegion;
+@property (nonatomic) JGNetworkRegion *ruddockRegion;
+@property (nonatomic) JGNetworkRegion *pageRegion;
+
 @property (nonatomic) CLCircularRegion *caltechRegion;
 
 @property (nonatomic) BOOL inRoom;
-//@property (nonatomic) JGNetworkLocation *inLloyd;
+
+@property (nonatomic) BOOL inLLoyd;
+@property (nonatomic) BOOL inRuddock;
+@property (nonatomic) BOOL inPage;
+
 @property (nonatomic) BOOL onCampus;
 @property (nonatomic) NSString *city;
 
@@ -56,12 +55,16 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     [self.manager startMonitoringForRegion:self.bedroomRegion];
     [self.manager startMonitoringForRegion:self.caltechRegion];
     [self.manager startMonitoringForRegion:self.lloydRegion];
+    [self.manager startMonitoringForRegion:self.ruddockRegion];
+    [self.manager startMonitoringForRegion:self.pageRegion];
     
     [self.manager startMonitoringSignificantLocationChanges];
     
     [self.manager requestStateForRegion:self.caltechRegion];
     [self.manager requestStateForRegion:self.bedroomRegion];
     [self.manager requestStateForRegion:self.lloydRegion];
+    [self.manager requestStateForRegion:self.ruddockRegion];
+    [self.manager requestStateForRegion:self.pageRegion];
     
 }
 
@@ -100,40 +103,75 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 
 -(JGNetworkRegion*)lloydRegion{
     if (!_lloydRegion) {
-        _lloydRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"0:b:86:30:9d:52"] inCircularRegion:self.caltechRegion identifier:JGLloydRegionIdentifier];
+        _lloydRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"0:b:86:30:9d:52", @"0:1a:1e:6d:54:82"] inCircularRegion:self.caltechRegion identifier:JGLloydRegionIdentifier];
     }
     return _lloydRegion;
+}
+
+-(JGNetworkRegion*)ruddockRegion{
+    if (!_ruddockRegion) {
+        _ruddockRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[] inCircularRegion:self.caltechRegion identifier:JGRuddockRegionIdentifier];
+    }
+    return _ruddockRegion;
+}
+
+-(JGNetworkRegion*)pageRegion{
+    if (!_pageRegion) {
+        _pageRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[] inCircularRegion:self.caltechRegion identifier:JGPageRegionIdentifier];
+    }
+    return _pageRegion;
+}
+
+-(void)updateDisplay{
+         if (self.inRoom)    self.indicatorLabel.text = @"in your room";
+    else if (self.inLLoyd)   self.indicatorLabel.text = @"in Lloyd";
+    else if (self.inRuddock) self.indicatorLabel.text = @"in Ruddock";
+    else if (self.inPage)    self.indicatorLabel.text = @"in Page";
+    else if (self.onCampus)  self.indicatorLabel.text = @"on campus";
+    else if (self.city)      self.indicatorLabel.text = [NSString stringWithFormat:@"in %@",self.city];
+    else                     self.indicatorLabel.text = @"somewhere";
 }
 
 -(void)setInRoom:(BOOL)inRoom{
     if (inRoom != _inRoom) {
         _inRoom = inRoom;
-        
-        if (inRoom) self.indicatorLabel.text = @"in your room";
+        [self updateDisplay];
     }
 }
 
-//-(void)setNetworkLocation:(JGNetworkLocation)campusLocation{
-//    if (campusLocation != _networkLocation) {
-//        _networkLocation = campusLocation;
-//
-//        if (campusLocation && !self.inRoom) self.indicatorLabel.text = @"in CAMPUS_LOCATION";
-//    }
-//}
+-(void)setInLLoyd:(BOOL)inLLoyd{
+    if (inLLoyd != _inLLoyd) {
+        _inLLoyd = inLLoyd;
+        [self updateDisplay];
+    }
+}
+
+-(void)setInRuddock:(BOOL)inRuddock{
+    if (inRuddock != _inRuddock) {
+        _inRuddock = inRuddock;
+        [self updateDisplay];
+    }
+}
+
+-(void)setInPage:(BOOL)inPage{
+    if (inPage != _inPage) {
+        _inPage = inPage;
+        [self updateDisplay];
+    }
+}
 
 -(void)setOnCampus:(BOOL)onCampus{
     if (onCampus != _onCampus) {
         _onCampus = onCampus;
+        [self updateDisplay];
 
-        if (onCampus && /*!self.networkLocation &&*/ !self.inRoom) self.indicatorLabel.text = @"on campus";
     }
 }
 
 -(void)setCity:(NSString *)city{
     if (city != _city) {
         _city = city;
-        
-        if (!self.onCampus && /*!self.networkLocation &&*/ !self.inRoom) self.indicatorLabel.text = [NSString stringWithFormat:@"in %@",city];
+        [self updateDisplay];
     }
 }
 
@@ -145,7 +183,13 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
         self.onCampus = (state == CLRegionStateInside);
     }
     else if([region.identifier isEqualToString:JGLloydRegionIdentifier]){
-        NSLog(@"IN LLOYD");
+        self.inLLoyd =  (state == CLRegionStateInside);
+    }
+    else if([region.identifier isEqualToString:JGRuddockRegionIdentifier]){
+        self.inRuddock =  (state == CLRegionStateInside);
+    }
+    else if([region.identifier isEqualToString:JGPageRegionIdentifier]){
+        self.inPage =  (state == CLRegionStateInside);
     }
 }
 
@@ -156,6 +200,15 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     else if([region.identifier isEqualToString:JGCaltechRegionIdentifier]){
         self.onCampus = YES;
     }
+    else if([region.identifier isEqualToString:JGLloydRegionIdentifier]){
+        self.inLLoyd =  YES;
+    }
+    else if([region.identifier isEqualToString:JGRuddockRegionIdentifier]){
+        self.inRuddock = YES;
+    }
+    else if([region.identifier isEqualToString:JGPageRegionIdentifier]){
+        self.inPage = YES;
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
@@ -165,7 +218,15 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     else if([region.identifier isEqualToString:JGBedroomRegionIdentifier]){
         self.onCampus = NO;
     }
-    //else if([region.identifier isEqualToString:])
+    else if([region.identifier isEqualToString:JGLloydRegionIdentifier]){
+        self.inLLoyd = NO;
+    }
+    else if([region.identifier isEqualToString:JGRuddockRegionIdentifier]){
+        self.inRuddock = NO;
+    }
+    else if([region.identifier isEqualToString:JGPageRegionIdentifier]){
+        self.inPage = NO;
+    }
 }
 
 -(void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{

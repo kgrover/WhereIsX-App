@@ -44,6 +44,8 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 -(void)requestStateForRegion:(CLRegion *)region{
     if ([region.class isSubclassOfClass:[JGNetworkRegion class]]) {
         
+        // ISSUE - calls delegate for every network region
+        [super requestStateForRegion:[(JGNetworkRegion*)region circularRegion]];
     }
     else{
         [super requestStateForRegion:region];
@@ -144,13 +146,12 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
         for (JGNetworkRegion *networkRegion in networkRegionsForCircularRegion) {
             if ([networkRegion isKindOfClass:[JGNetworkRegion class]]) {
                 // Let the users know what the state of our network region is
-                if ([self.currentlyMonitoredNetworks containsObject:networkRegion]) {
-                    // We are nearby, so we need to use our magical network detection skills to find out if we are in the region
-                    
-                    CLRegionState state = [networkRegion.networkData containsObject:[self currentBSSID]] ? CLRegionStateInside : CLRegionStateOutside;
-                    [_delegate locationManager:manager didDetermineState:state forRegion:networkRegion];
-                }
-                else [_delegate locationManager:manager didDetermineState:CLRegionStateOutside forRegion:networkRegion];
+                // We are nearby, so we need to use our magical network detection skills to find out if we are in the region
+                
+                NSString *BSSID = [self currentBSSID];
+                BOOL found = [networkRegion.networkData containsObject:BSSID];
+                CLRegionState state = found ? CLRegionStateInside : CLRegionStateOutside;
+                [_delegate locationManager:manager didDetermineState:state forRegion:networkRegion];
             }
             else{
                 // An actual circular region that the user cared about
@@ -221,6 +222,8 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 }
 
 -(void)setFetching:(BOOL)fetching{
+    // ISSUE - doesn't refresh in foreground
+    
     if (fetching != _fetching) {
         _fetching = fetching;
         
