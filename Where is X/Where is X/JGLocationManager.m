@@ -18,6 +18,7 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 
 @property (nonatomic) NSMutableDictionary *networkRegions;
 @property (nonatomic) NSMutableArray *currentlyMonitoredNetworks;
+@property (nonatomic) NSMutableArray *currentlyInsideNetworks;
 
 @property (nonatomic) BOOL fetching;
 
@@ -74,11 +75,18 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 
 #pragma mark - Properties
 
--(NSArray*)currentlyMonitoredNetworks{
+-(NSMutableArray*)currentlyMonitoredNetworks{
     if (!_currentlyMonitoredNetworks) {
         _currentlyMonitoredNetworks = [NSMutableArray array];
     }
     return _currentlyMonitoredNetworks;
+}
+
+-(NSMutableArray*)currentlyInsideNetworks{
+    if (!_currentlyInsideNetworks) {
+        _currentlyInsideNetworks = [NSMutableArray array];
+    }
+    return _currentlyInsideNetworks;
 }
 
 -(NSMutableDictionary*)networkRegions{
@@ -138,7 +146,8 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
                 if ([self.currentlyMonitoredNetworks containsObject:networkRegion]) {
                     // We are nearby, so we need to use our magical network detection skills to find out if we are in the region
                     
-                    // TO IMPLEMENT
+                    CLRegionState state = [self isWithinNetworkRegion:networkRegion] ? CLRegionStateInside : CLRegionStateOutside;
+                    [_delegate locationManager:manager didDetermineState:state forRegion:networkRegion];
                 }
                 else [_delegate locationManager:manager didDetermineState:CLRegionStateOutside forRegion:networkRegion];
             }
@@ -198,25 +207,66 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 #pragma mark - Fetching
 
 -(void)startMonitoringNetwork:(JGNetworkRegion*)network{
+    [self.currentlyMonitoredNetworks addObject:network];
     
+    self.fetching = self.currentlyMonitoredNetworks.count;
 }
 
 -(void)stopMonitoringNetwork:(JGNetworkRegion*)network{
+    [self.currentlyMonitoredNetworks removeObject:network];
+    [self.currentlyInsideNetworks removeObject:network];
     
+    self.fetching = self.currentlyMonitoredNetworks.count;
 }
 
 -(void)setFetching:(BOOL)fetching{
-    _fetching = fetching;
-    
-    if (fetching) [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:self.searchInterval];
-    else [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+    if (fetching != _fetching) {
+        _fetching = fetching;
+        
+        if (fetching){
+            [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:self.searchInterval];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(backgroundFetch:) name:@"fetchRequested" object:nil];
+        }
+        else{
+            [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalNever];
+        }
 
+    }
 }
 
 -(void)setSearchInterval:(NSTimeInterval)searchInterval{
     _searchInterval = searchInterval;
     
     if (self.fetching) [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:searchInterval];
+}
+
+-(void)backgroundFetch:(NSNotification*)notification{
+    void (^completionHandler)(UIBackgroundFetchResult) = notification.object;
+    
+    BOOL newData = NO;
+    for (JGNetworkRegion *region in self.currentlyMonitoredNetworks) {
+        BOOL insideNetwork = [self isWithinNetworkRegion:region];
+        
+        if (insideNetwork && ![self.currentlyInsideNetworks containsObject:region]) {
+            [self.currentlyInsideNetworks addObject:region];
+            [_delegate locationManager:self didEnterRegion:region];
+            newData = YES;
+        }
+        else if(!insideNetwork && [self.currentlyInsideNetworks containsObject:region]){
+            [self.currentlyInsideNetworks removeObject:region];
+            [_delegate locationManager:self didExitRegion:region];
+            newData = YES;
+        }
+    }
+    
+    completionHandler(newData ? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData);
+}
+
+#pragma mark - Network
+
+-(BOOL)isWithinNetworkRegion:(JGNetworkRegion*)region{
+    
 }
 
 @end
