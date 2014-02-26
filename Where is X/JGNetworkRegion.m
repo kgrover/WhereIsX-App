@@ -19,10 +19,10 @@
 
 @implementation JGNetworkRegion
 
--(id)initWithNetworkData:(JGNetworkData*)network inCircularRegion:(CLCircularRegion*)region identifier:(NSString*)identifier{
+-(id)initWithNetworkData:(NSArray*)networkData inCircularRegion:(CLCircularRegion*)region identifier:(NSString*)identifier{
     self = [super init];
     if (self) {
-        _network = network;
+        _networkData = networkData;
         _circularRegion = region;
         _identifier = identifier;
         

@@ -8,6 +8,7 @@
 
 #import "JGLocationManager.h"
 #import <objc/runtime.h>
+#import <SystemConfiguration/CaptiveNetwork.h>
 
 NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 
@@ -146,7 +147,7 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
                 if ([self.currentlyMonitoredNetworks containsObject:networkRegion]) {
                     // We are nearby, so we need to use our magical network detection skills to find out if we are in the region
                     
-                    CLRegionState state = [self isWithinNetworkRegion:networkRegion] ? CLRegionStateInside : CLRegionStateOutside;
+                    CLRegionState state = [networkRegion.networkData containsObject:[self currentBSSID]] ? CLRegionStateInside : CLRegionStateOutside;
                     [_delegate locationManager:manager didDetermineState:state forRegion:networkRegion];
                 }
                 else [_delegate locationManager:manager didDetermineState:CLRegionStateOutside forRegion:networkRegion];
@@ -244,9 +245,11 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 -(void)backgroundFetch:(NSNotification*)notification{
     void (^completionHandler)(UIBackgroundFetchResult) = notification.object;
     
+    NSString *currentBSSID = [self currentBSSID];
+    
     BOOL newData = NO;
     for (JGNetworkRegion *region in self.currentlyMonitoredNetworks) {
-        BOOL insideNetwork = [self isWithinNetworkRegion:region];
+        BOOL insideNetwork = [region.networkData containsObject:currentBSSID];
         
         if (insideNetwork && ![self.currentlyInsideNetworks containsObject:region]) {
             [self.currentlyInsideNetworks addObject:region];
@@ -265,8 +268,16 @@ NSTimeInterval const JGLocationManagerSearchIntervalMinimum = 0;
 
 #pragma mark - Network
 
--(BOOL)isWithinNetworkRegion:(JGNetworkRegion*)region{
+- (NSString *)currentBSSID
+{
+    NSArray *ifs = (__bridge id)CNCopySupportedInterfaces();
     
+    NSDictionary *info = nil;
+    for (NSString *ifnam in ifs) {
+        info = (__bridge_transfer NSDictionary*)CNCopyCurrentNetworkInfo((__bridge CFStringRef)ifnam);
+        if (info && [info count]) break;
+    }
+    return info[@"BSSID"];
 }
 
 @end

@@ -25,7 +25,7 @@
 		D74EA93F18BCAF21009DB12F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D74EA93E18BCAF21009DB12F /* CoreLocation.framework */; };
 		D773AFFD18BCC25500B450CA /* JGNetworkRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = D773AFFC18BCC25500B450CA /* JGNetworkRegion.m */; };
 		D773B00018BCC31400B450CA /* JGLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D773AFFF18BCC31400B450CA /* JGLocationManager.m */; };
-		D773B00318BCC5FE00B450CA /* JGNetworkData.m in Sources */ = {isa = PBXBuildFile; fileRef = D773B00218BCC5FE00B450CA /* JGNetworkData.m */; };
+		D77CF35D18BDA4FD00209A5F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77CF35C18BDA4FD00209A5F /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,8 +64,7 @@
 		D773AFFC18BCC25500B450CA /* JGNetworkRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JGNetworkRegion.m; path = ../JGNetworkRegion.m; sourceTree = "<group>"; };
 		D773AFFE18BCC31400B450CA /* JGLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGLocationManager.h; sourceTree = "<group>"; };
 		D773AFFF18BCC31400B450CA /* JGLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGLocationManager.m; sourceTree = "<group>"; };
-		D773B00118BCC5FE00B450CA /* JGNetworkData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGNetworkData.h; sourceTree = "<group>"; };
-		D773B00218BCC5FE00B450CA /* JGNetworkData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGNetworkData.m; sourceTree = "<group>"; };
+		D77CF35C18BDA4FD00209A5F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D77CF35D18BDA4FD00209A5F /* SystemConfiguration.framework in Frameworks */,
 				D74EA93F18BCAF21009DB12F /* CoreLocation.framework in Frameworks */,
 				D74EA90A18BCAAC9009DB12F /* CoreGraphics.framework in Frameworks */,
 				D74EA90C18BCAAC9009DB12F /* UIKit.framework in Frameworks */,
@@ -115,6 +115,7 @@
 		D74EA90618BCAAC9009DB12F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D77CF35C18BDA4FD00209A5F /* SystemConfiguration.framework */,
 				D74EA93E18BCAF21009DB12F /* CoreLocation.framework */,
 				D74EA90718BCAAC9009DB12F /* Foundation.framework */,
 				D74EA90918BCAAC9009DB12F /* CoreGraphics.framework */,
@@ -136,8 +137,6 @@
 				D773AFFF18BCC31400B450CA /* JGLocationManager.m */,
 				D773AFFB18BCC25500B450CA /* JGNetworkRegion.h */,
 				D773AFFC18BCC25500B450CA /* JGNetworkRegion.m */,
-				D773B00118BCC5FE00B450CA /* JGNetworkData.h */,
-				D773B00218BCC5FE00B450CA /* JGNetworkData.m */,
 				D74EA91F18BCAAC9009DB12F /* Images.xcassets */,
 				D74EA93C18BCADB5009DB12F /* bg.png */,
 				D74EA90E18BCAAC9009DB12F /* Supporting Files */,
@@ -281,7 +280,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D74EA91418BCAAC9009DB12F /* main.m in Sources */,
-				D773B00318BCC5FE00B450CA /* JGNetworkData.m in Sources */,
 				D773B00018BCC31400B450CA /* JGLocationManager.m in Sources */,
 				D773AFFD18BCC25500B450CA /* JGNetworkRegion.m in Sources */,
 				D74EA91E18BCAAC9009DB12F /* JGViewController.m in Sources */,

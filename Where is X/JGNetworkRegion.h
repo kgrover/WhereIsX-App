@@ -7,13 +7,12 @@
 //
 
 #import <CoreLocation/CoreLocation.h>
-#import "JGNetworkData.h"
 
 @interface JGNetworkRegion : CLRegion
 
-@property (nonatomic, readonly) JGNetworkData *network;
+@property (nonatomic, readonly) NSArray *networkData;
 @property (nonatomic, readonly) CLCircularRegion *circularRegion;
 
--(id)initWithNetworkData:(JGNetworkData*)network inCircularRegion:(CLCircularRegion*)region identifier:(NSString*)identifier;
+-(id)initWithNetworkData:(NSArray*)networkData inCircularRegion:(CLCircularRegion*)region identifier:(NSString*)identifier;
 
 @end
