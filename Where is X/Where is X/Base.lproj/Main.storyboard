@@ -57,7 +57,7 @@
             </objects>
             <point key="canvasLocation" x="56" y="3"/>
         </scene>
-        <!--Configure Location View Controller - Configure Locations-->
+        <!--Configure Location View Controller - Locations-->
         <scene sceneID="hJX-Zf-fi7">
             <objects>
                 <tableViewController id="q4I-jx-HVv" customClass="JGConfigureLocationViewController" sceneMemberID="viewController">
@@ -76,7 +76,7 @@
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Configure Locations" id="XTX-rc-DUN">
+                    <navigationItem key="navigationItem" title="Locations" id="XTX-rc-DUN">
                         <barButtonItem key="leftBarButtonItem" title="Done" style="done" id="HwA-v0-Zcr">
                             <connections>
                                 <action selector="donePress:" destination="q4I-jx-HVv" id="8TB-6p-GIc"/>
@@ -93,10 +93,10 @@
             </objects>
             <point key="canvasLocation" x="1103" y="3"/>
         </scene>
-        <!--View Controller - Add Location-->
+        <!--Setup Location View Controller - Add-->
         <scene sceneID="75a-5d-VMI">
             <objects>
-                <viewController id="NGl-Ev-oPX" sceneMemberID="viewController">
+                <viewController id="NGl-Ev-oPX" customClass="JGSetupLocationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GoN-Uq-ouO"/>
                         <viewControllerLayoutGuide type="bottom" id="g3J-hy-quH"/>
@@ -104,17 +104,125 @@
                     <view key="view" contentMode="scaleToFill" id="ZI4-mZ-j1o">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="N5E-tX-TbH">
+                                <rect key="frame" x="20" y="186" width="280" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Beacon"/>
+                                    <segment title="Wifi"/>
+                                    <segment title="GPS"/>
+                                </segments>
+                            </segmentedControl>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="in Lloyd" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3WV-Pb-lhi">
+                                <rect key="frame" x="0.0" y="66" width="320" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="NGl-Ev-oPX" id="Pwe-RB-hyB"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You are" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHX-ww-se5">
+                                <rect key="frame" x="0.0" y="20" width="320" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="when a specific" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUm-CV-JMs">
+                                <rect key="frame" x="0.0" y="128" width="320" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="signal is detected." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CdI-ck-FYs">
+                                <rect key="frame" x="0.0" y="233" width="320" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Location" id="QhU-il-fXE">
+                    <navigationItem key="navigationItem" title="Add" id="QhU-il-fXE">
                         <barButtonItem key="backBarButtonItem" title="Hey" id="366-62-aEO"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="K2M-03-5gy"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="FA1-Vu-lE6"/>
+                        <barButtonItem key="rightBarButtonItem" title="Setup" style="done" id="FA1-Vu-lE6">
+                            <connections>
+                                <action selector="setupPress:" destination="NGl-Ev-oPX" id="X8l-kX-1NY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="placeField" destination="3WV-Pb-lhi" id="AMp-up-vy8"/>
+                        <outlet property="signalType" destination="N5E-tX-TbH" id="gdE-IG-xIv"/>
+                        <segue destination="uim-tJ-BRG" kind="push" identifier="beaconSegue" id="Kql-lc-6U3"/>
+                        <segue destination="O0N-aJ-rO9" kind="push" identifier="wifiSegue" id="Kx1-rd-yRr"/>
+                        <segue destination="2HP-gm-ilp" kind="push" identifier="gpsSegue" id="ffN-Hq-U8d"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f9h-tx-jXt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1577" y="3"/>
+        </scene>
+        <!--Wifi Setup View Controller - Wifi Setup-->
+        <scene sceneID="kIg-h5-dLW">
+            <objects>
+                <viewController id="O0N-aJ-rO9" customClass="JGWifiSetupViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eCg-Z9-OHX"/>
+                        <viewControllerLayoutGuide type="bottom" id="tAb-8b-Wuv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PkU-ws-tcP">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Wifi Setup" id="uDO-2y-L13"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WKu-w7-l0m" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2061" y="3"/>
+        </scene>
+        <!--Setup View Controller - GPS Setup-->
+        <scene sceneID="uBw-I1-SOa">
+            <objects>
+                <viewController id="2HP-gm-ilp" customClass="JGGPSSetupViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="S84-d7-cWN"/>
+                        <viewControllerLayoutGuide type="bottom" id="WLq-kG-XkF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="dWC-2p-YS5">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="GPS Setup" id="VhL-YF-ig2"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ywf-So-mFA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2061" y="695"/>
+        </scene>
+        <!--Beacon Setup View Controller - Beacon Setup-->
+        <scene sceneID="IJ0-IB-nOe">
+            <objects>
+                <viewController id="uim-tJ-BRG" customClass="JGBeaconSetupViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XRg-aF-vtq"/>
+                        <viewControllerLayoutGuide type="bottom" id="wtv-6t-jNJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Tjq-fW-55h">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Beacon Setup" id="1jb-1l-CK0"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AYU-IE-4D2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2061" y="-696"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nPl-c7-3Vr">

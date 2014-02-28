@@ -9,6 +9,8 @@
 #import "JGViewController.h"
 #import "JGLocationManager.h"
 
+#import "ARServerUpdater.h"
+
 NSString * const JGBedroomBeaconUUID = @"23542266-18D1-4FE4-B4A1-23F8195B9D39";
 
 NSString * const JGBedroomRegionIdentifier = @"com.JadenGeller.whereis.region.bedroom";
@@ -46,6 +48,9 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    ARServerUpdater *updater = [[ARServerUpdater alloc]initWithUsername:@"jgeller" password:@"12345"];
+    [updater updateLocation:@"kind of hungry"];
     
     [self.manager startMonitoringSignificantLocationChanges];
     

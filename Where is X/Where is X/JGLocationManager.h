@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol JGLocationManagerDelegate <NSObject>
+
+-(void)locationChanged:(NSString*)locationString;
+
+@end
+
 @interface JGLocationManager : NSObject
+
+@property (nonatomic) NSString *locationString;
+
+@property (nonatomic) id<JGLocationManagerDelegate> delegate;
 
 @end
