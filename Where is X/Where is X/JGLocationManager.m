@@ -7,7 +7,6 @@
 //
 
 #import "JGLocationManager.h"
-#import <CoreLocation/CoreLocation.h>
 #import "JGWifiLocation.h"
 #import "JGWifiLocationManager.h"
 
@@ -83,6 +82,7 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 -(CLLocationManager*)regionManager{
     if (_regionManager) {
         _regionManager = [[CLLocationManager alloc]init];
+        _regionManager.delegate = self;
     }
     return _regionManager;
 }
@@ -97,5 +97,6 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 -(void)save{
     [[NSUserDefaults standardUserDefaults] setObject:self.locations forKey:JGLocationsArrayKey];
 }
+
 
 @end

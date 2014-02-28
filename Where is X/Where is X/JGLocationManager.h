@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @protocol JGLocationManagerDelegate <NSObject>
 
@@ -14,7 +15,7 @@
 
 @end
 
-@interface JGLocationManager : NSObject
+@interface JGLocationManager : NSObject <CLLocationManagerDelegate>
 
 @property (nonatomic) NSString *locationString;
 
