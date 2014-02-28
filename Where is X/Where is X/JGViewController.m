@@ -25,13 +25,8 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 
 @interface JGViewController ()
 
-@property (nonatomic) JGLocationManager *manager;
+@property (nonatomic) CLLocationManager *manager;
 @property (nonatomic) CLBeaconRegion *bedroomRegion;
-
-@property (nonatomic) JGNetworkRegion *lloydRegion;
-@property (nonatomic) JGNetworkRegion *ruddockRegion;
-@property (nonatomic) JGNetworkRegion *pageRegion;
-
 @property (nonatomic) CLCircularRegion *caltechRegion;
 
 @property (nonatomic) BOOL inRoom;
@@ -52,30 +47,8 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    [self.manager startMonitoringForRegion:self.bedroomRegion];
-    [self.manager startMonitoringForRegion:self.caltechRegion];
-    [self.manager startMonitoringForRegion:self.lloydRegion];
-    [self.manager startMonitoringForRegion:self.ruddockRegion];
-    [self.manager startMonitoringForRegion:self.pageRegion];
-    
     [self.manager startMonitoringSignificantLocationChanges];
     
-    [self.manager requestStateForRegion:self.caltechRegion];
-    [self.manager requestStateForRegion:self.bedroomRegion];
-    [self.manager requestStateForRegion:self.lloydRegion];
-    [self.manager requestStateForRegion:self.ruddockRegion];
-    [self.manager requestStateForRegion:self.pageRegion];
-    
-}
-
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    // test
-    [self.manager requestStateForRegion:self.caltechRegion];
-    [self.manager requestStateForRegion:self.bedroomRegion];
-    [self.manager requestStateForRegion:self.lloydRegion];
-    [self.manager requestStateForRegion:self.ruddockRegion];
-    [self.manager requestStateForRegion:self.pageRegion];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -88,9 +61,9 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     return UIStatusBarStyleLightContent;
 }
 
--(JGLocationManager*)manager{
+-(CLLocationManager*)manager{
     if (!_manager) {
-        _manager = [[JGLocationManager alloc]init];
+        _manager = [[CLLocationManager alloc]init];
         _manager.delegate = self;
     }
     return _manager;
@@ -109,27 +82,6 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
         _caltechRegion = [[CLCircularRegion alloc]initWithCenter:CLLocationCoordinate2DMake(JGCaltechLatitude, JGCaltechLongitude) radius:JGCaltechRadiusMeters identifier:JGCaltechRegionIdentifier];
     }
     return _caltechRegion;
-}
-
--(JGNetworkRegion*)lloydRegion{
-    if (!_lloydRegion) {
-        _lloydRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"0:1a:1e:6d:54:82",@"0:b:86:33:17:92",@"0:b:86:32:f7:32",@"0:b:86:33:16:22",@"0:1a:1e:6d:43:82",@"0:b:86:30:9d:52",@"0:b:86:33:12:52",@"0:1a:1e:6d:52:a2",@"0:b:86:30:9f:d2",@"0:b:86:33:18:c2",@"0:b:86:32:f8:72"] inCircularRegion:self.caltechRegion identifier:JGLloydRegionIdentifier];
-    }
-    return _lloydRegion;
-}
-
--(JGNetworkRegion*)ruddockRegion{
-    if (!_ruddockRegion) {
-        _ruddockRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[@"20:aa:4b:d5:3f:9e",@"0:b:86:32:f8:72",@"0:1a:1e:6d:45:12",@"0:b:86:32:f8:e2",@"0:b:86:32:f6:82",@"0:b:86:32:f7:12",@"0:b:86:33:16:22",@"0:b:86:32:f8:2"] inCircularRegion:self.caltechRegion identifier:JGRuddockRegionIdentifier];
-    }
-    return _ruddockRegion;
-}
-
--(JGNetworkRegion*)pageRegion{
-    if (!_pageRegion) {
-        _pageRegion = [[JGNetworkRegion alloc]initWithNetworkData:@[] inCircularRegion:self.caltechRegion identifier:JGPageRegionIdentifier];
-    }
-    return _pageRegion;
 }
 
 -(void)updateDisplay{
