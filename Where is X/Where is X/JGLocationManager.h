@@ -20,4 +20,10 @@
 
 @property (nonatomic) id<JGLocationManagerDelegate> delegate;
 
+@property (nonatomic) NSArray *locations;
+
+-(void)addLocation:(NSObject*)location;
+-(void)removeLocationAtIndex:(NSInteger)index;
+-(void)moveLocationAtIndex:(NSInteger)oldIndex toIndex:(NSInteger)newIndex;
+
 @end

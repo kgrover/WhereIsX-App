@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D703D6E218C0DEAA00E8F7B7 /* JGWifiLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = D703D6E118C0DEAA00E8F7B7 /* JGWifiLocation.m */; };
+		D703D6E518C0E42B00E8F7B7 /* JGWifiLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D703D6E418C0E42B00E8F7B7 /* JGWifiLocationManager.m */; };
 		D7308D7418C0137A006F2402 /* JGConfigureLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7308D7318C0137A006F2402 /* JGConfigureLocationViewController.m */; };
 		D7308D7718C01D65006F2402 /* JGSetupLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7308D7618C01D65006F2402 /* JGSetupLocationViewController.m */; };
 		D74EA90818BCAAC9009DB12F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D74EA90718BCAAC9009DB12F /* Foundation.framework */; };
@@ -54,6 +56,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D703D6E018C0DEAA00E8F7B7 /* JGWifiLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGWifiLocation.h; sourceTree = "<group>"; };
+		D703D6E118C0DEAA00E8F7B7 /* JGWifiLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGWifiLocation.m; sourceTree = "<group>"; };
+		D703D6E318C0E42B00E8F7B7 /* JGWifiLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGWifiLocationManager.h; sourceTree = "<group>"; };
+		D703D6E418C0E42B00E8F7B7 /* JGWifiLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGWifiLocationManager.m; sourceTree = "<group>"; };
 		D7308D7218C0137A006F2402 /* JGConfigureLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGConfigureLocationViewController.h; sourceTree = "<group>"; };
 		D7308D7318C0137A006F2402 /* JGConfigureLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGConfigureLocationViewController.m; sourceTree = "<group>"; };
 		D7308D7518C01D65006F2402 /* JGSetupLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGSetupLocationViewController.h; sourceTree = "<group>"; };
@@ -139,6 +145,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D703D6DE18C0DDFB00E8F7B7 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				D756692118C01F8B009A98F1 /* JGBeaconSetupViewController.h */,
+				D756692218C01F8B009A98F1 /* JGBeaconSetupViewController.m */,
+				D756692418C01F95009A98F1 /* JGWifiSetupViewController.h */,
+				D756692518C01F95009A98F1 /* JGWifiSetupViewController.m */,
+				D756692718C01F9F009A98F1 /* JGGPSSetupViewController.h */,
+				D756692818C01F9F009A98F1 /* JGGPSSetupViewController.m */,
+			);
+			name = Setup;
+			sourceTree = "<group>";
+		};
+		D703D6DF18C0DE0800E8F7B7 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				D703D6DE18C0DDFB00E8F7B7 /* Setup */,
+				D7308D7218C0137A006F2402 /* JGConfigureLocationViewController.h */,
+				D7308D7318C0137A006F2402 /* JGConfigureLocationViewController.m */,
+				D7308D7518C01D65006F2402 /* JGSetupLocationViewController.h */,
+				D7308D7618C01D65006F2402 /* JGSetupLocationViewController.m */,
+			);
+			name = Configuration;
+			sourceTree = "<group>";
+		};
 		D74EA8FB18BCAAC9009DB12F = {
 			isa = PBXGroup;
 			children = (
@@ -179,18 +210,13 @@
 				D74EA91C18BCAAC9009DB12F /* JGViewController.h */,
 				D74EA91D18BCAAC9009DB12F /* JGViewController.m */,
 				D74EA91918BCAAC9009DB12F /* Main.storyboard */,
-				D756692118C01F8B009A98F1 /* JGBeaconSetupViewController.h */,
-				D756692218C01F8B009A98F1 /* JGBeaconSetupViewController.m */,
-				D756692418C01F95009A98F1 /* JGWifiSetupViewController.h */,
-				D756692518C01F95009A98F1 /* JGWifiSetupViewController.m */,
-				D756692718C01F9F009A98F1 /* JGGPSSetupViewController.h */,
-				D756692818C01F9F009A98F1 /* JGGPSSetupViewController.m */,
-				D7308D7218C0137A006F2402 /* JGConfigureLocationViewController.h */,
-				D7308D7318C0137A006F2402 /* JGConfigureLocationViewController.m */,
-				D7308D7518C01D65006F2402 /* JGSetupLocationViewController.h */,
-				D7308D7618C01D65006F2402 /* JGSetupLocationViewController.m */,
+				D703D6DF18C0DE0800E8F7B7 /* Configuration */,
 				D769341518C00D9E00EDBED1 /* JGLocationManager.h */,
 				D769341618C00D9E00EDBED1 /* JGLocationManager.m */,
+				D703D6E318C0E42B00E8F7B7 /* JGWifiLocationManager.h */,
+				D703D6E418C0E42B00E8F7B7 /* JGWifiLocationManager.m */,
+				D703D6E018C0DEAA00E8F7B7 /* JGWifiLocation.h */,
+				D703D6E118C0DEAA00E8F7B7 /* JGWifiLocation.m */,
 				D769341218C00D6500EDBED1 /* JGBSSIDRanger.h */,
 				D769341318C00D6600EDBED1 /* JGBSSIDRanger.m */,
 				D756692A18C01FD4009A98F1 /* ARServerUpdater.h */,
@@ -374,6 +400,7 @@
 				D74EA91E18BCAAC9009DB12F /* JGViewController.m in Sources */,
 				D756694418C020CE009A98F1 /* AFNetworkReachabilityManager.m in Sources */,
 				D756692618C01F95009A98F1 /* JGWifiSetupViewController.m in Sources */,
+				D703D6E518C0E42B00E8F7B7 /* JGWifiLocationManager.m in Sources */,
 				D756694818C020CE009A98F1 /* AFURLResponseSerialization.m in Sources */,
 				D756694718C020CE009A98F1 /* AFURLRequestSerialization.m in Sources */,
 				D756694618C020CE009A98F1 /* AFURLConnectionOperation.m in Sources */,
@@ -384,6 +411,7 @@
 				D7308D7718C01D65006F2402 /* JGSetupLocationViewController.m in Sources */,
 				D7308D7418C0137A006F2402 /* JGConfigureLocationViewController.m in Sources */,
 				D756692C18C01FD4009A98F1 /* ARServerUpdater.m in Sources */,
+				D703D6E218C0DEAA00E8F7B7 /* JGWifiLocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
