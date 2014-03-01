@@ -25,7 +25,24 @@
 
 -(void)encodeWithCoder:(NSCoder *)aCoder{
     [aCoder encodeObject:self.networkData forKey:@"networkData"];
-    [aCoder encodeObject:self.associatedCircularRegion forKey:@"circularRegion"];
+    [aCoder encodeObject:self.assoc
+     iatedCircularRegion forKey:@"circularRegion"];
+}
+
+-(BOOL)isEqual:(id)object{
+    return ([object isKindOfClass:[self class]] && [self.associatedCircularRegion isEqual:[object associatedCircularRegion]] && [self.networkData isEqual:[object networkData]]);
+}
+
++(JGWifiLocation*)wifiLocationWithNetworkData:(NSArray*)networkData circularRegion:(CLCircularRegion*)region{
+    return [[JGWifiLocation alloc]initWithNetworkData:networkData circularRegion:region];
+}
+
+- (id)copyWithZone:(NSZone *)zone{
+    return [[JGWifiLocation allocWithZone:zone]initWithNetworkData:self.networkData circularRegion:self.associatedCircularRegion];
+}
+
+-(NSUInteger)hash{
+    return self.networkData.hash + self.associatedCircularRegion.hash;
 }
 
 @end

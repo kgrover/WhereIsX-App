@@ -83,7 +83,7 @@
 		D74EA92E18BCAAC9009DB12F /* Where is XTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Where is XTests-Info.plist"; sourceTree = "<group>"; };
 		D74EA93018BCAAC9009DB12F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D74EA93218BCAAC9009DB12F /* Where_is_XTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Where_is_XTests.m; sourceTree = "<group>"; };
-		D74EA93C18BCADB5009DB12F /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bg.png; path = ../bg.png; sourceTree = "<group>"; };
+		D74EA93C18BCADB5009DB12F /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		D74EA93E18BCAF21009DB12F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D756692118C01F8B009A98F1 /* JGBeaconSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGBeaconSetupViewController.h; sourceTree = "<group>"; };
 		D756692218C01F8B009A98F1 /* JGBeaconSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGBeaconSetupViewController.m; sourceTree = "<group>"; };
@@ -221,6 +221,7 @@
 				D769341318C00D6600EDBED1 /* JGBSSIDRanger.m */,
 				D756692A18C01FD4009A98F1 /* ARServerUpdater.h */,
 				D756692B18C01FD4009A98F1 /* ARServerUpdater.m */,
+				D74EA93C18BCADB5009DB12F /* bg.png */,
 				D756692D18C020CD009A98F1 /* AFNetworking */,
 				D74EA91F18BCAAC9009DB12F /* Images.xcassets */,
 				D74EA90E18BCAAC9009DB12F /* Supporting Files */,
@@ -275,7 +276,6 @@
 				D756693A18C020CE009A98F1 /* AFURLConnectionOperation.m */,
 				D756693B18C020CE009A98F1 /* AFURLRequestSerialization.h */,
 				D756693C18C020CE009A98F1 /* AFURLRequestSerialization.m */,
-				D74EA93C18BCADB5009DB12F /* bg.png */,
 				D756693D18C020CE009A98F1 /* AFURLResponseSerialization.h */,
 				D756693E18C020CE009A98F1 /* AFURLResponseSerialization.m */,
 				D756693F18C020CE009A98F1 /* AFURLSessionManager.h */,

@@ -8,20 +8,24 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import "JGWifiLocationManager.h"
 
 @protocol JGLocationManagerDelegate <NSObject>
 
--(void)locationChanged:(NSString*)locationString;
+-(void)locationChanged;
 
 @end
 
-@interface JGLocationManager : NSObject <CLLocationManagerDelegate>
+@interface JGLocationManager : NSObject <CLLocationManagerDelegate, JGWifiLocationManagerDelegate>
 
 @property (nonatomic) NSString *locationString;
 
 @property (nonatomic) id<JGLocationManagerDelegate> delegate;
 
+@property (nonatomic) NSString *city;
 @property (nonatomic) NSArray *locations;
+
+@property (nonatomic) NSObject *highestPriorityEnteredRegion;
 
 -(void)addLocation:(NSObject*)location;
 -(void)removeLocationAtIndex:(NSInteger)index;

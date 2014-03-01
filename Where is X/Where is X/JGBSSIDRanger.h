@@ -21,10 +21,12 @@
 @property (nonatomic) NSTimeInterval searchInterval;
 
 @property (nonatomic) BOOL ranging;
+@property (nonatomic) BOOL record;
 
 -(void)clear;
 
 + (NSString *)currentBSSID;
+- (NSString*)performSearch;
 
 @property (nonatomic, readonly) NSArray *BSSIDs;
 

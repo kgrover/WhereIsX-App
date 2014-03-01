@@ -8,12 +8,10 @@
 
 #import "JGLocationManager.h"
 #import "JGWifiLocation.h"
-#import "JGWifiLocationManager.h"
 
 NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 
 @interface JGLocationManager ()
-
 {
     NSMutableArray *_locations;
 }
@@ -21,17 +19,37 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 @property (nonatomic) CLLocationManager *regionManager;
 @property (nonatomic) JGWifiLocationManager *wifiManager;
 
+@property (nonatomic) NSMutableArray *insideLocations;
+
 @end
 
 @implementation JGLocationManager
 
+@synthesize highestPriorityEnteredRegion = _highestPriorityEnteredRegion;
+
 -(id)init{
     if (self = [super init]) {
         _locations = [[NSUserDefaults standardUserDefaults]arrayForKey:JGLocationsArrayKey].mutableCopy;
+        _locations = [NSMutableArray array];
         
+        [self.regionManager startMonitoringSignificantLocationChanges];
         [self trackAllLocations];
     }
     return self;
+}
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
+    CLLocation *current = [locations lastObject];
+    
+    CLGeocoder *geocode = [[CLGeocoder alloc]init];
+    [geocode reverseGeocodeLocation:current completionHandler:^(NSArray *placemarks, NSError *error) {
+        CLPlacemark *place = placemarks[0]; //disregard any other possible responses
+        self.city = place.locality;
+        
+        if (self.insideLocations.count == 0) {
+            [self.delegate locationChanged];
+        }
+    }];
 }
 
 -(void)trackAllLocations{
@@ -75,12 +93,12 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
     [_locations insertObject:obj atIndex:newIndex];
 }
 
--(NSMutableArray*)locations{
+-(NSArray*)locations{
     return _locations.copy;
 }
 
 -(CLLocationManager*)regionManager{
-    if (_regionManager) {
+    if (!_regionManager) {
         _regionManager = [[CLLocationManager alloc]init];
         _regionManager.delegate = self;
     }
@@ -90,13 +108,63 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 -(JGWifiLocationManager*)wifiManager{
     if (!_wifiManager) {
         _wifiManager = [[JGWifiLocationManager alloc]init];
+        _wifiManager.delegate = self;
     }
     return _wifiManager;
 }
 
--(void)save{
-    [[NSUserDefaults standardUserDefaults] setObject:self.locations forKey:JGLocationsArrayKey];
+-(NSMutableArray*)insideLocations{
+    if (!_insideLocations) {
+        _insideLocations = [NSMutableArray array];
+    }
+    return _insideLocations;
 }
 
+-(void)updateHighestPriorityEnteredRegion{
+    NSObject *new;
+    
+    for (NSObject *location in self.locations) {
+        if ([self.insideLocations containsObject:location]){
+            new = location;
+            break;
+        }
+    }
+    
+    BOOL changed = ![new isEqual:_highestPriorityEnteredRegion];
+    _highestPriorityEnteredRegion = new;
+
+    if (changed) [self.delegate locationChanged];
+}
+
+-(void)save{
+    //[[NSUserDefaults standardUserDefaults] setObject:self.locations forKey:JGLocationsArrayKey];
+    // CANT SAVE TO DISK BECAUSE NSUSERDEFAULTS SUCKS WHEN IT COMES TO ANYTHIGN
+}
+
+-(void)locationManager:(JGWifiLocationManager*)manager didEnterLocation:(JGWifiLocation*)location{
+    [self didEnterLocation:location];
+}
+
+-(void)locationManager:(JGWifiLocationManager*)manager didExitLocation:(JGWifiLocation*)location{
+    [self didExitLocation:location];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region{
+    [self didEnterLocation:region];
+}
+
+-(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region{
+    [self didExitLocation:region];
+}
+
+-(void)didEnterLocation:(NSObject*)location{
+    [self.insideLocations addObject:location];
+    [self updateHighestPriorityEnteredRegion];
+}
+
+-(void)didExitLocation:(NSObject*)location{
+    [self.insideLocations removeObject:location];
+    [self updateHighestPriorityEnteredRegion];
+}
 
 @end

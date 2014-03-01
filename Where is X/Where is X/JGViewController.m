@@ -7,38 +7,29 @@
 //
 
 #import "JGViewController.h"
-#import "JGLocationManager.h"
-
 #import "ARServerUpdater.h"
+#import "JGWifiLocation.h"
 
 NSString * const JGBedroomBeaconUUID = @"23542266-18D1-4FE4-B4A1-23F8195B9D39";
 
 NSString * const JGBedroomRegionIdentifier = @"com.JadenGeller.whereis.region.bedroom";
-
-NSString * const JGLloydRegionIdentifier = @"com.JadenGeller.whereis.region.network.lloyd";
-NSString * const JGRuddockRegionIdentifier = @"com.JadenGeller.whereis.region.network.ruddock";
-NSString * const JGPageRegionIdentifier = @"com.JadenGeller.whereis.region.network.page";
-
 NSString * const JGCaltechRegionIdentifier = @"com.JadenGeller.whereis.region.caltech";
 
 CLLocationDegrees const JGCaltechLatitude = 34.13724130951865;
 CLLocationDegrees const JGCaltechLongitude = -118.12534332275385;
 CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 
+NSString * const JGLocationStringsDictionaryKey = @"com.whereis.locationstrings.saved";
+
 @interface JGViewController ()
 
-@property (nonatomic) CLLocationManager *manager;
+@property (nonatomic) JGLocationManager *manager;
 @property (nonatomic) CLBeaconRegion *bedroomRegion;
 @property (nonatomic) CLCircularRegion *caltechRegion;
 
-@property (nonatomic) BOOL inRoom;
+@property (nonatomic) ARServerUpdater *updater;
 
-@property (nonatomic) BOOL inLLoyd;
-@property (nonatomic) BOOL inRuddock;
-@property (nonatomic) BOOL inPage;
-
-@property (nonatomic) BOOL onCampus;
-@property (nonatomic) NSString *city;
+@property (nonatomic) NSMutableDictionary *locationStrings;
 
 @end
 
@@ -48,12 +39,7 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
-    ARServerUpdater *updater = [[ARServerUpdater alloc]initWithUsername:@"jgeller" password:@"12345"];
-    [updater updateLocation:@"kind of hungry"];
-    
-    [self.manager startMonitoringSignificantLocationChanges];
-    
+    [self addLocation:[JGWifiLocation wifiLocationWithNetworkData:@[@"20:aa:4b:d5:3f:9e",@"0:b:86:32:f8:72",@"0:1a:1e:6d:45:12",@"0:b:86:32:f8:e2",@"0:b:86:32:f6:82",@"0:b:86:32:f7:12",@"0:b:86:33:16:22",@"0:b:86:32:f8:2"] circularRegion:self.caltechRegion] withDescriptor:@"in Ruddock"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,9 +52,39 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     return UIStatusBarStyleLightContent;
 }
 
--(CLLocationManager*)manager{
+-(NSMutableDictionary*)locationStrings{
+    if (!_locationStrings) {
+        _locationStrings = [[NSUserDefaults standardUserDefaults]dictionaryForKey:JGLocationStringsDictionaryKey].mutableCopy;
+        if (!_locationStrings) {
+            _locationStrings = [NSMutableDictionary dictionary];
+        }
+    }
+    return _locationStrings;
+}
+
+-(NSString*)locationString{
+    NSObject *location = self.manager.highestPriorityEnteredRegion;
+    if (location) return [self.locationStrings objectForKey:location];
+    else if (self.manager.city) return [NSString stringWithFormat:@"in %@",self.manager.city];
+    else return @"somewhere";
+}
+
+-(void)locationChanged{
+    NSString *string = [self locationString];
+    [self.updater updateLocation: string];
+    self.indicatorLabel.text = string;
+}
+
+-(ARServerUpdater*)updater{
+    if (!_updater) {
+        _updater = [[ARServerUpdater alloc]initWithUsername:@"jgeller" password:@"12345"];
+    }
+    return _updater;
+}
+
+-(JGLocationManager*)manager{
     if (!_manager) {
-        _manager = [[CLLocationManager alloc]init];
+        _manager = [[JGLocationManager alloc]init];
         _manager.delegate = self;
     }
     return _manager;
@@ -89,127 +105,11 @@ CLLocationDistance const JGCaltechRadiusMeters = 621.9538056207171;
     return _caltechRegion;
 }
 
--(void)updateDisplay{
-         if (self.inRoom)    self.indicatorLabel.text = @"in your room";
-    else if (self.inLLoyd)   self.indicatorLabel.text = @"in Lloyd";
-    else if (self.inRuddock) self.indicatorLabel.text = @"in Ruddock";
-    else if (self.inPage)    self.indicatorLabel.text = @"in Page";
-    else if (self.onCampus)  self.indicatorLabel.text = @"on campus";
-    else if (self.city)      self.indicatorLabel.text = [NSString stringWithFormat:@"in %@",self.city];
-    else                     self.indicatorLabel.text = @"somewhere";
+-(void)addLocation:(NSObject<NSCopying> *)location withDescriptor:(NSString*)string{
+    [self.manager addLocation:location];
+    [self.locationStrings setObject:string forKey:location];
 }
 
--(void)setInRoom:(BOOL)inRoom{
-    if (inRoom != _inRoom) {
-        _inRoom = inRoom;
-        [self updateDisplay];
-    }
-}
-
--(void)setInLLoyd:(BOOL)inLLoyd{
-    if (inLLoyd != _inLLoyd) {
-        _inLLoyd = inLLoyd;
-        [self updateDisplay];
-    }
-}
-
--(void)setInRuddock:(BOOL)inRuddock{
-    if (inRuddock != _inRuddock) {
-        _inRuddock = inRuddock;
-        [self updateDisplay];
-    }
-}
-
--(void)setInPage:(BOOL)inPage{
-    if (inPage != _inPage) {
-        _inPage = inPage;
-        [self updateDisplay];
-    }
-}
-
--(void)setOnCampus:(BOOL)onCampus{
-    if (onCampus != _onCampus) {
-        _onCampus = onCampus;
-        [self updateDisplay];
-
-    }
-}
-
--(void)setCity:(NSString *)city{
-    if (city != _city) {
-        _city = city;
-        [self updateDisplay];
-    }
-}
-
--(void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region{
-    if ([region.identifier isEqualToString:JGBedroomRegionIdentifier]) {
-        self.inRoom = (state == CLRegionStateInside);
-    }
-    else if([region.identifier isEqualToString:JGCaltechRegionIdentifier]){
-        self.onCampus = (state == CLRegionStateInside);
-    }
-    else if([region.identifier isEqualToString:JGLloydRegionIdentifier]){
-        self.inLLoyd =  (state == CLRegionStateInside);
-    }
-    else if([region.identifier isEqualToString:JGRuddockRegionIdentifier]){
-        self.inRuddock =  (state == CLRegionStateInside);
-    }
-    else if([region.identifier isEqualToString:JGPageRegionIdentifier]){
-        self.inPage =  (state == CLRegionStateInside);
-    }
-}
-
-- (void)locationManager:(CLLocationManager *)manager didEnterRegion:(CLRegion *)region {
-    if ([region.identifier isEqualToString:JGBedroomRegionIdentifier]) {
-        self.inRoom = YES;
-    }
-    else if([region.identifier isEqualToString:JGCaltechRegionIdentifier]){
-        self.onCampus = YES;
-    }
-    else if([region.identifier isEqualToString:JGLloydRegionIdentifier]){
-        self.inLLoyd =  YES;
-    }
-    else if([region.identifier isEqualToString:JGRuddockRegionIdentifier]){
-        self.inRuddock = YES;
-    }
-    else if([region.identifier isEqualToString:JGPageRegionIdentifier]){
-        self.inPage = YES;
-    }
-}
-
--(void)locationManager:(CLLocationManager *)manager didExitRegion:(CLRegion *)region {
-    if ([region.identifier isEqualToString:JGBedroomRegionIdentifier]) {
-        self.inRoom = NO;
-    }
-    else if([region.identifier isEqualToString:JGBedroomRegionIdentifier]){
-        self.onCampus = NO;
-    }
-    else if([region.identifier isEqualToString:JGLloydRegionIdentifier]){
-        self.inLLoyd = NO;
-    }
-    else if([region.identifier isEqualToString:JGRuddockRegionIdentifier]){
-        self.inRuddock = NO;
-    }
-    else if([region.identifier isEqualToString:JGPageRegionIdentifier]){
-        self.inPage = NO;
-    }
-}
-
--(void)locationManager:(CLLocationManager *)manager monitoringDidFailForRegion:(CLRegion *)region withError:(NSError *)error{
-    NSLog(@"Error %@",error);
-}
-
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations{
-    CLLocation *current = [locations lastObject];
-    
-    if ([self.caltechRegion containsCoordinate:current.coordinate]) self.onCampus = YES;
-    
-    CLGeocoder *geocode = [[CLGeocoder alloc]init];
-    [geocode reverseGeocodeLocation:current completionHandler:^(NSArray *placemarks, NSError *error) {
-        CLPlacemark *place = placemarks[0]; //disregard any other possible responses
-        self.city = place.locality;
-    }];
-}
+// TO DO: IMPLEMENT HASH FOR CUSTOM CLASSES
 
 @end

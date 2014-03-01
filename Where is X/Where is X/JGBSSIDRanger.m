@@ -32,6 +32,13 @@
     [_BSSIDs removeAllObjects];
 }
 
+-(void)setRecord:(BOOL)record{
+    _record = record;
+    if (!record) {
+        [self clear];
+    }
+}
+
 -(void)setSearchInterval:(NSTimeInterval)searchInterval{
     _searchInterval = searchInterval;
     [self.searchTimer invalidate];
@@ -39,17 +46,24 @@
 }
 
 -(void)startTimer{
-    self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchInterval target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
+    self.searchTimer = [NSTimer scheduledTimerWithTimeInterval:self.searchInterval target:self selector:@selector(performSearchForDelegate) userInfo:nil repeats:NO];
 }
 
--(void)performSearch{
+-(void)performSearchForDelegate{
+    NSString *search = [self performSearch];
+    if (search && [self.delegate respondsToSelector:@selector(foundNewBSSID:)]) [self.delegate foundNewBSSID:search];
+}
+
+-(NSString*)performSearch{
     NSString *BSSID = [JGBSSIDRanger currentBSSID];
     
     if (![_BSSIDs containsObject:BSSID]) {
+        if (!self.record) [_BSSIDs removeAllObjects];
         [_BSSIDs addObject:BSSID];
-        if ([self.delegate respondsToSelector:@selector(foundNewBSSID:)]) [self.delegate foundNewBSSID:BSSID];
+        return BSSID;
     }
     if (self.ranging) [self startTimer];
+    return nil;
 }
 
 -(NSString*)BSSIDs{

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
+#import "JGLocationManager.h"
 
-@interface JGViewController : UIViewController <CLLocationManagerDelegate>
+@interface JGViewController : UIViewController <JGLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *indicatorLabel;
 

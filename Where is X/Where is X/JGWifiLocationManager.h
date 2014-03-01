@@ -7,11 +7,26 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "JGWifiLocation.h"
+#import <CoreLocation/CoreLocation.h>
+#import "JGBSSIDRanger.h"
 
-@interface JGWifiLocationManager : NSObject
+@class JGWifiLocation, JGWifiLocationManager;
+
+@protocol JGWifiLocationManagerDelegate <NSObject>
+
+-(void)locationManager:(JGWifiLocationManager*)manager didEnterLocation:(JGWifiLocation*)location;
+-(void)locationManager:(JGWifiLocationManager*)manager didExitLocation:(JGWifiLocation*)location;
+
+@end
+
+@interface JGWifiLocationManager : NSObject <CLLocationManagerDelegate, JGBSSIDRangerDelegate>
 
 -(void)startMonitoringForLocation:(JGWifiLocation*)location;
 -(void)stopMonitoringForLocation:(JGWifiLocation*)location;
+
+@property (nonatomic, weak) id<JGWifiLocationManagerDelegate> delegate;
+
+@property (nonatomic,readonly) BOOL ranging;
+@property (nonatomic) NSTimeInterval searchInterval;
 
 @end
