@@ -25,8 +25,7 @@
 
 -(void)encodeWithCoder:(NSCoder *)aCoder{
     [aCoder encodeObject:self.networkData forKey:@"networkData"];
-    [aCoder encodeObject:self.assoc
-     iatedCircularRegion forKey:@"circularRegion"];
+    [aCoder encodeObject:self.associatedCircularRegion forKey:@"circularRegion"];
 }
 
 -(BOOL)isEqual:(id)object{

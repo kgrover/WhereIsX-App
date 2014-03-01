@@ -61,8 +61,9 @@
     
     if ([self.regions countForObject:location.associatedCircularRegion] == 0) {
         [self.manager startMonitoringForRegion:location.associatedCircularRegion];
+         NSLog(@"a");
     }
-    
+    NSLog(@"A %@", location.associatedCircularRegion);
     // this will add it to watched if we are in the region
     [self.manager requestStateForRegion:location.associatedCircularRegion];
     
@@ -122,10 +123,11 @@
     }
     return _ranger;
 }
-
 -(void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region{
+     NSLog(@"B");
     for (JGWifiLocation *location in self.locations) {
         if ([location.associatedCircularRegion.identifier isEqualToString:region.identifier]) {
+             NSLog(@"C");
             // this location wants to start being updated
             if (state == CLRegionStateInside)[self startWatching:location];
             else if (state == CLRegionStateOutside) [self stopWatching:location];
@@ -153,10 +155,15 @@
 }
 
 -(void)startWatching:(JGWifiLocation*)location{
+     NSLog(@"D");
+    NSString *currentBSSID = self.ranger.BSSIDs.count?self.ranger.BSSIDs[0]:nil;
     if (self.watched.count == 0) {
         self.ranger.ranging = YES;
         
         [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:self.searchInterval];
+    }
+    else if(currentBSSID && [location.networkData containsObject:currentBSSID]){
+        [self changedRegion:currentBSSID];
     }
     
     [self.watched addObject:location];

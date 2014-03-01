@@ -23,12 +23,12 @@ NSString * const JGLocationStringsDictionaryKey = @"com.whereis.locationstrings.
 
 @interface JGViewController ()
 
-@property (nonatomic) JGLocationManager *manager;
 @property (nonatomic) CLBeaconRegion *bedroomRegion;
 @property (nonatomic) CLCircularRegion *caltechRegion;
 
 @property (nonatomic) ARServerUpdater *updater;
 
+@property (nonatomic) JGLocationManager *manager;
 @property (nonatomic) NSMutableDictionary *locationStrings;
 
 @end
@@ -39,7 +39,18 @@ NSString * const JGLocationStringsDictionaryKey = @"com.whereis.locationstrings.
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    _manager = [[JGLocationManager alloc]init];
+    _manager.delegate = self;
+    
     [self addLocation:[JGWifiLocation wifiLocationWithNetworkData:@[@"20:aa:4b:d5:3f:9e",@"0:b:86:32:f8:72",@"0:1a:1e:6d:45:12",@"0:b:86:32:f8:e2",@"0:b:86:32:f6:82",@"0:b:86:32:f7:12",@"0:b:86:33:16:22",@"0:b:86:32:f8:2"] circularRegion:self.caltechRegion] withDescriptor:@"in Ruddock"];
+    [self addLocation:[[CLBeaconRegion alloc]initWithProximityUUID:[[NSUUID alloc]initWithUUIDString:@"D57092AC-DFAA-446C-8EF3-C81AA22815B5"] identifier:@"blah"] withDescriptor:@"in his room"];
+    [self addLocation:self.caltechRegion withDescriptor:@"on campus"];
+
+}
+
+-(NSUInteger)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,7 +75,8 @@ NSString * const JGLocationStringsDictionaryKey = @"com.whereis.locationstrings.
 
 -(NSString*)locationString{
     NSObject *location = self.manager.highestPriorityEnteredRegion;
-    if (location) return [self.locationStrings objectForKey:location];
+    if (self.hidden) return @"somewhere";
+    else if (location) return [self.locationStrings objectForKey:location];
     else if (self.manager.city) return [NSString stringWithFormat:@"in %@",self.manager.city];
     else return @"somewhere";
 }
@@ -80,14 +92,6 @@ NSString * const JGLocationStringsDictionaryKey = @"com.whereis.locationstrings.
         _updater = [[ARServerUpdater alloc]initWithUsername:@"jgeller" password:@"12345"];
     }
     return _updater;
-}
-
--(JGLocationManager*)manager{
-    if (!_manager) {
-        _manager = [[JGLocationManager alloc]init];
-        _manager.delegate = self;
-    }
-    return _manager;
 }
 
 -(CLBeaconRegion*)bedroomRegion{
@@ -108,6 +112,24 @@ NSString * const JGLocationStringsDictionaryKey = @"com.whereis.locationstrings.
 -(void)addLocation:(NSObject<NSCopying> *)location withDescriptor:(NSString*)string{
     [self.manager addLocation:location];
     [self.locationStrings setObject:string forKey:location];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    UINavigationController *nav = segue.destinationViewController;
+    if ([nav.viewControllers[0] isKindOfClass:[JGConfigureLocationViewController class]]) {
+        JGConfigureLocationViewController *config = nav.viewControllers[0];
+        config.delegate = self;
+        config.manager = self.manager;
+        config.locationStrings = self.locationStrings;
+    }
+}
+
+-(BOOL)hidden{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"shouldHide"];
+}
+
+-(void)hiddenChanged{
+    [self locationChanged];
 }
 
 // TO DO: IMPLEMENT HASH FOR CUSTOM CLASSES

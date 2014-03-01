@@ -64,6 +64,7 @@
 		D7308D7318C0137A006F2402 /* JGConfigureLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGConfigureLocationViewController.m; sourceTree = "<group>"; };
 		D7308D7518C01D65006F2402 /* JGSetupLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGSetupLocationViewController.h; sourceTree = "<group>"; };
 		D7308D7618C01D65006F2402 /* JGSetupLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JGSetupLocationViewController.m; sourceTree = "<group>"; };
+		D74C6C1118C2120100D54971 /* JGSetupProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JGSetupProtocol.h; sourceTree = "<group>"; };
 		D74EA90418BCAAC9009DB12F /* Where is X.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Where is X.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D74EA90718BCAAC9009DB12F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D74EA90918BCAAC9009DB12F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -148,6 +149,7 @@
 		D703D6DE18C0DDFB00E8F7B7 /* Setup */ = {
 			isa = PBXGroup;
 			children = (
+				D74C6C1118C2120100D54971 /* JGSetupProtocol.h */,
 				D756692118C01F8B009A98F1 /* JGBeaconSetupViewController.h */,
 				D756692218C01F8B009A98F1 /* JGBeaconSetupViewController.m */,
 				D756692418C01F95009A98F1 /* JGWifiSetupViewController.h */,

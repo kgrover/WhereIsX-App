@@ -7,8 +7,11 @@
 //
 
 #import "JGConfigureLocationViewController.h"
+#import "JGLocationManager.h"
 
 @interface JGConfigureLocationViewController ()
+
+@property (nonatomic) BOOL hidden;
 
 @end
 
@@ -26,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setHiddenButtonStyle:self.hidden];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -48,28 +52,34 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return self.manager.locations.count;
 }
 
-/*
+-(void)addLocation:(NSObject<NSCopying>*)location withDescription:(NSString*)description{
+    [self.manager addLocation:location];
+    [self.locationStrings setObject:description forKey:location];
+    
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.manager.locations.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"locationCell" forIndexPath:indexPath];
     
+    cell.textLabel.text = [self.locationStrings objectForKey:[self.manager.locations objectAtIndex:indexPath.row]];
     // Configure the cell...
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.
@@ -119,5 +129,33 @@
     // Pass the selected object to the new view controller.
 }
 */
+-(BOOL)hidden{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"shouldHide"];
+}
+
+-(void)setHidden:(BOOL)hidden{
+    [[NSUserDefaults standardUserDefaults] setBool:hidden forKey:@"shouldHide"];
+    [self.delegate hiddenChanged];
+
+}
+
+-(void)setHiddenButtonStyle:(BOOL)hidden{
+    if (hidden) {
+        self.hiddenButton.title = @"Hidden";
+        self.hiddenButton.tintColor = [UIColor redColor];
+        self.hiddenButton.style = UIBarButtonItemStyleDone;
+    }
+    else {
+        self.hiddenButton.title = @"Not Hidden";
+        self.hiddenButton.tintColor = self.settingsButton.tintColor;
+        self.hiddenButton.style = UIBarButtonItemStylePlain;
+    }
+}
+
+- (IBAction)hiddenPress:(id)sender {
+    BOOL hidden = !self.hidden;
+    self.hidden = hidden;
+    [self setHiddenButtonStyle:hidden];
+}
 
 @end

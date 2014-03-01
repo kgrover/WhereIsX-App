@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JGSetupProtocol.h"
 
-@interface JGBeaconSetupViewController : UIViewController
+@interface JGBeaconSetupViewController : UIViewController <JGSetupProtocol>
+
+@property (nonatomic) NSString *locationDescription;
 
 @end

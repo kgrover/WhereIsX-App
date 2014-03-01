@@ -7,6 +7,7 @@
 //
 
 #import "JGSetupLocationViewController.h"
+#import "JGSetupProtocol.h"
 
 @interface JGSetupLocationViewController ()
 
@@ -27,8 +28,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.setupButton.enabled = NO;
     [self.placeField becomeFirstResponder];
+    [self.placeField addTarget:self action:@selector(editedPlace) forControlEvents:UIControlEventEditingChanged];
+}
+
+-(void)editedPlace{
+    self.setupButton.enabled = self.placeField.text.length;
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,6 +64,12 @@
     [self performSegueWithIdentifier:segueIdentifier sender:sender];
     
 }
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    [(id <JGSetupProtocol>)segue.destinationViewController setLocationDescription:self.placeField.text];
+}
+
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [self setupPress:nil];

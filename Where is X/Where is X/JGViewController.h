@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "JGLocationManager.h"
+#import "JGConfigureLocationViewController.h"
 
-@interface JGViewController : UIViewController <JGLocationManagerDelegate>
+@interface JGViewController : UIViewController <JGLocationManagerDelegate, JGConfigureLocationProtocol>
 
 @property (weak, nonatomic) IBOutlet UILabel *indicatorLabel;
+-(BOOL)hidden;
+-(void)hiddenChanged;
 
 @end

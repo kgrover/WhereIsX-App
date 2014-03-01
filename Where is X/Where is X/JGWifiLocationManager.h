@@ -24,6 +24,7 @@
 -(void)startMonitoringForLocation:(JGWifiLocation*)location;
 -(void)stopMonitoringForLocation:(JGWifiLocation*)location;
 
+
 @property (nonatomic, weak) id<JGWifiLocationManagerDelegate> delegate;
 
 @property (nonatomic,readonly) BOOL ranging;

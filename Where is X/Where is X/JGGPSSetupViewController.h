@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JGSetupProtocol.h"
 
 @interface JGGPSSetupViewController : UIViewController
+
+@property (nonatomic) NSString *locationDescription;
+
 
 @end

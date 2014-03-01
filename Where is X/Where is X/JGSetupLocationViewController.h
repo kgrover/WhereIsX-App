@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *placeField;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *signalType;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *setupButton;
 
 @end

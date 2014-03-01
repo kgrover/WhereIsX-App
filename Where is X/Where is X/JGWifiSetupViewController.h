@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JGBSSIDRanger.h"
+#import "JGSetupProtocol.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface JGWifiSetupViewController : UIViewController
+@interface JGWifiSetupViewController : UITableViewController <JGBSSIDRangerDelegate, CLLocationManagerDelegate>
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *recordButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
+
+@property (nonatomic) NSString *locationDescription;
+
 
 @end

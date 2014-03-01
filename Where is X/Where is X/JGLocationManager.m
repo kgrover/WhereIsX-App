@@ -59,6 +59,7 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 -(void)trackLocation:(NSObject*)location{
     if ([location isKindOfClass:[CLRegion class]]) {
         [self.regionManager startMonitoringForRegion:(CLRegion*)location];
+        [self.regionManager requestStateForRegion:(CLRegion*)location];
     }
     else if([location isKindOfClass:[JGWifiLocation class]]){
         [self.wifiManager startMonitoringForLocation:(JGWifiLocation*)location];
@@ -141,6 +142,11 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
     // CANT SAVE TO DISK BECAUSE NSUSERDEFAULTS SUCKS WHEN IT COMES TO ANYTHIGN
 }
 
+-(void)locationManager:(CLLocationManager *)manager didDetermineState:(CLRegionState)state forRegion:(CLRegion *)region{
+    if (CLRegionStateInside == state) [self didEnterLocation:region];
+    else if (CLRegionStateOutside == state) [self didExitLocation:region];
+}
+
 -(void)locationManager:(JGWifiLocationManager*)manager didEnterLocation:(JGWifiLocation*)location{
     [self didEnterLocation:location];
 }
@@ -158,13 +164,17 @@ NSString * const JGLocationsArrayKey = @"com.whereis.locations.saved";
 }
 
 -(void)didEnterLocation:(NSObject*)location{
-    [self.insideLocations addObject:location];
-    [self updateHighestPriorityEnteredRegion];
+    if (![self.insideLocations containsObject:location]) {
+        [self.insideLocations addObject:location];
+        [self updateHighestPriorityEnteredRegion];
+    }
 }
 
 -(void)didExitLocation:(NSObject*)location{
-    [self.insideLocations removeObject:location];
-    [self updateHighestPriorityEnteredRegion];
+    if ([self.insideLocations containsObject:location]) {
+        [self.insideLocations removeObject:location];
+        [self updateHighestPriorityEnteredRegion];
+    }
 }
 
 @end
