@@ -7,11 +7,18 @@
 //
 
 #import "JGAppDelegate.h"
+#import <Parse/Parse.h>
 
 @implementation JGAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [Parse setApplicationId:@"fQwPPFQyO73tsruCZb5jvBAYYQTinBoB8286ECbX"
+                  clientKey:@"rVFG8ZTjKMkb4fyp6kvbaCKdBlPudmnfWroGldA2"];
+    
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
     // Override point for customization after application launch.
     return YES;
 }
