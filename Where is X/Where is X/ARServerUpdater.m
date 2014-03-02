@@ -9,6 +9,7 @@
 #import "ARServerUpdater.h"
 #import "AFNetworking.h"
 #import "AFHTTPRequestOperationManager.h"
+#import <Parse/Parse.h>
 
 NSString * const ARServerURL = @"http://alex.caltech.edu:5000";
 
@@ -39,7 +40,13 @@ NSString * const ARServerURL = @"http://alex.caltech.edu:5000";
 }
 
 -(void)updateLocation:(NSString*)location{
-    [self.manager GET:[NSString stringWithFormat:@"/update_location/%@/%@",self.username,[location stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] parameters:nil success:nil failure:nil];
+//    [self.manager GET:[NSString stringWithFormat:@"/update_location/%@/%@",self.username,[location stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] parameters:nil success:nil failure:nil];
+    
+    PFObject *testObject = [PFObject objectWithClassName:@"LocationObject"];
+    testObject[@"locationString"] = [NSString stringWithFormat:@"%@", location];
+    [testObject saveInBackground];
+    
+    
 }
 
 @end
